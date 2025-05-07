@@ -1,39 +1,49 @@
 # Coding Challenge Magento 2
-Coding challenge for limeecommerce test
+This repository contains a completed coding challenge for Lime Ecommerce focusing on Magento 2 customization and module development.
 
-## Goals
-- [x] Installing magento via composer
-- [x] create one module name "Lime/Sample" 
-- [x] Create a custom URL that says "Hello World"
-- [x] Add homepage link in every page in Navigation Bar
-- [x] Not changing core code
-- [x] Change url to magento.local
-- [x] Install module slider
-- [x] Disable ElasticSearch/OpenSearch
+## Challenge Requirements ✅
 
-## Installing Magento 
-When developing this, I used `Ubuntu 22.04`, there may be differences when you use a different version or os.
-However, if it is still in the linux family, the difference will not be significant.
+| Task | Status |
+|------|--------|
+| Install Magento via Composer | ✅ Completed |
+| Create "Lime/Sample" module | ✅ Completed |
+| Create a custom URL showing "Hello World" | ✅ Completed |
+| Add homepage link in Navigation Bar on all pages | ✅ Completed |
+| Avoid modifying core code | ✅ Completed |
+| Change URL to magento.local | ✅ Completed |
+| Install slider module | ✅ Completed |
+| Disable ElasticSearch/OpenSearch | ✅ Completed |
 
-I also apologize for not using the magento 2.4.4 version due to the issues I mentioned in the private chat with Mr. Soma.
+## Environment Setup
 
-For now I am using magento version `2.4.6` during installation, and upgrading to 2.4.7 (compatibility with module product slider)
+This implementation was developed on **Ubuntu 22.04**. While other Linux distributions should work similarly, there may be minor differences in configuration.
 
-### Requirements
+> **Note:** Magento version 2.4.6 was used initially and later upgraded to 2.4.7 for compatibility with the product slider module.
+
+### System Requirements
+
 ```
-- PHP 8.2
-- Mariadb 10.7.x
-- Composer (to installing vendor again)
-- Nginx (when you want to run it on a webserver)
+- PHP 8.2+
+- MariaDB 10.7.x
+- Composer (for dependency management)
+- Nginx (as web server)
 ```
 
-### Setup Magento 2 back
-Basically, since I only added a folder to /app, if the application is re-initiated, then there shouldn't be any changes, even though the data is different.
+## Installation Instructions
 
-as long as there is dummy data or valid data that has been installed
-```
+### 1. Installing Magento
+
+Run the following command to set up Magento:
+
+```bash
+cd coding-challenge/path
+
+# Install the vendor
+composer install
+
+# Setup installation for magento
 php bin/magento setup:install \
---base-url=http://magento.local/ \ # Change this url based on your url
+--base-url=http://magento.local/ \
 --db-host=magento \
 --db-name=magento \
 --db-user=magento \
@@ -46,38 +56,81 @@ php bin/magento setup:install \
 --language=en_US \
 --currency=USD \
 --timezone=Asia/Jakarta \
---use-rewrites=1"
-# ElasticSearch/Opensearch is completely disable by using zepgram
-# You can check on https://github.com/zepgram/module-disable-search-engine
+--use-rewrites=1
+```
 
-# After installing setup, you can install the sampledata (optional)
+> **Note:** ElasticSearch/OpenSearch is disabled using [Zepgram's module](https://github.com/zepgram/module-disable-search-engine)
+
+### 2. Installing Sample Data (Optional)
+
+```bash
 php bin/magento sampledata:deploy
+```
 
-# After all, completely i ran this section
+### 3. Finalizing Installation
+
+```bash
 php bin/magento setup:upgrade
 php bin/magento setup:di:compile
 php bin/magento setup:static-content:deploy -f
-
-# Warn. Usually magento is try to use 2fa when users admin loggedin.
-# When you got 2fa block. use this line
-sudo bin/magento config:set twofactorauth/general/force_providers google # set provider to google
 ```
 
-Then, install the nginx and add file `/etc/nginx/sites-available/magento.conf`
+### 4. Handling 2FA (If Needed)
+
+If you encounter 2FA blocking admin login:
+
+```bash
+bin/magento config:set twofactorauth/general/force_providers google
 ```
+
+### 5. Nginx Configuration
+
+Create a new file at `/etc/nginx/sites-available/magento.conf` with the following content:
+
+```nginx
 upstream fastcgi_backend {
-  server  unix:/run/php/php7.2-fpm.sock;
+  server unix:/run/php/php8.2-fpm.sock;  # Updated to match PHP 8.2
 }
 
 server {
   listen 80;
-  server_name www.magento-dev.com;
-  set $MAGE_ROOT /var/www/html/magento2; # Path to your magento 2 project
-  include /var/www/html/magento2/nginx.conf.sample;
+  server_name magento.local www.magento.local;  # Updated to match project domain
+  set $MAGE_ROOT /path/to/your/magento2;  # Update with your actual path
+  include $MAGE_ROOT/nginx.conf.sample;
 }
 ```
 
-ran `sudo nginx -t && sudo systemctl restart nginx` to ensure your nginx configuration is valid and can be restarted.
+Enable the site and restart Nginx:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/magento.conf /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl restart nginx
+```
+
+## Host Configuration
+
+Add the following entry to your `/etc/hosts` file:
+
+```
+127.0.0.1 magento.local www.magento.local
+```
+
+## Project Highlights
+
+### Custom Module Development
+
+The `Lime/Sample` module demonstrates:
+- Custom routing
+- Frontend integration
+- Navigation bar customization
+
+### Custom "Hello World" URL
+
+Created a dedicated endpoint that displays "Hello World" message.
+
+### Navigation Bar Enhancement
+
+Added a persistent "Home" link to the navigation bar across all pages.
 
 
 ## Proofs
