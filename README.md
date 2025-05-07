@@ -9,6 +9,7 @@ Coding challenge for limeecommerce test
 - [x] Not changing core code
 - [x] Change url to magento.local
 - [x] Install module slider
+- [x] Disable ElasticSearch/OpenSearch
 
 ## Installing Magento 
 When developing this, I used `Ubuntu 22.04`, there may be differences when you use a different version or os.
@@ -61,6 +62,23 @@ php bin/magento setup:static-content:deploy -f
 # When you got 2fa block. use this line
 sudo bin/magento config:set twofactorauth/general/force_providers google # set provider to google
 ```
+
+Then, install the nginx and add file `/etc/nginx/sites-available/magento.conf`
+```
+upstream fastcgi_backend {
+  server  unix:/run/php/php7.2-fpm.sock;
+}
+
+server {
+  listen 80;
+  server_name www.magento-dev.com;
+  set $MAGE_ROOT /var/www/html/magento2; # Path to your magento 2 project
+  include /var/www/html/magento2/nginx.conf.sample;
+}
+```
+
+ran `sudo nginx -t && sudo systemctl restart nginx` to ensure your nginx configuration is valid and can be restarted.
+
 
 ## Proofs
 
