@@ -2,7 +2,7 @@
 Coding challenge for limeecommerce test
 
 Goals
-- [x] menginstall magento lewat composer ()
+- [x] Installing magento via composer
 - [x] create one module name "Lime/Sample" 
 - [x] Create a custom URL that says "Hello World"
 - [x] Add homepage link in every page in Navigation Bar

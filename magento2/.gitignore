@@ -1,0 +1,77 @@
+# Magento 2 .gitignore
+
+# Ignore Composer dependencies
+/vendor/
+/pub/media/tmp/
+/pub/media/captcha/
+/pub/media/downloadable/tmp/
+/pub/media/import/
+/pub/media/customer/
+/pub/media/dhl/
+/pub/media/tmp/
+/pub/static/*
+!/pub/static/.htaccess
+!/pub/static/.keep
+
+# Ignore generated content
+/generated/
+/var/
+!var/.htaccess
+
+# Ignore Magento 2 environment configs
+/app/etc/env.php
+/app/etc/config.php
+
+# Ignore IDE files
+.idea/
+*.iml
+*.sublime-project
+*.sublime-workspace
+.vscode/
+
+# Node dependencies and build
+/node_modules/
+/npm-debug.log
+/yarn.lock
+/package-lock.json
+/.pnp
+.pnp.js
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# PHPUnit
+.phpunit.result.cache
+
+# Static content deploy
+/static/*
+!/static/.htaccess
+
+# Backup files
+*.bak
+*.swp
+*.tmp
+*.old
+
+# Grunt / Gulp / Frontend build stuff
+/.sass-cache/
+/.grunt/
+/.cache/
+/bower_components/
+
+# PHPStorm
+/.idea/
+
+# Environment variable files
+.env
+.env.*
+
+# Composer auth
+auth.json
+
+# Test coverage reports
+coverage/
